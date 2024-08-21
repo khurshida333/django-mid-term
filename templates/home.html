@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <div class="d-flex flex-wrap align-items-center">
+    <div class="col-6 p-5">
+      <h1 class="fw-bold">WELCOME TO our car selling website</h1>
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam quaerat ab tenetur nam veniam hic cupiditate, fuga, dignissimos officiis a nisi? Consequatur eum odit ipsam magni, suscipit vitae mollitia laudantium error sapiente ducimus porro, facilis corporis incidunt aperiam libero architecto, nobis exercitationem? Ipsum, mollitia? Ipsa ea nam impedit at quos ab deleniti quisquam excepturi? Dolor nostrum mollitia accusantium consequuntur quae minima facilis et fugit, adipisci reiciendis a voluptates quod, rerum eius natus tempora ullam reprehenderit corrupti. Accusamus vero enim deserunt nobis quas placeat velit, porro nulla architecto odit neque maxime totam debitis officia. Eum minus sunt dolores ratione id odio.</p>
+    </div>
+    <div class="col-6 p-5">
+      <img style="width: 600px; height: 500px;" src="{%  static 'car_logos.jpeg' %}" />
+    </div>
+  </div>
+  <div><h1 class="text-center">Brands :</h1></div>
+  <div><h1 class="text-center">------------------------------------------------------</h1></div>
+  <div class="d-flex justify-content-center flex-wrap p-5">
+    <div class="col-12 overflow-auto p-3 ">
+      <div class="row ">
+        {% for brnd in brand %}
+          <div class="col-3 p-2">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="brand" id="{{ cat.id }}" href="{% url 'brand_wise_car' brnd.slug %}" />
+              <label class="form-check-label" for="{{ brnd.id }}">
+                <button class=" btn-secondary"><a href="{% url 'brand_wise_car' brnd.slug %}" class=" btn btn-secondary text-decoration-none text-white">{{ brnd.name }}</a></button>
+              </label>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="col-12 p-3">
+      <p>All post {{ total_posts_count}}</p>
+      <h4>{{  filtered_posts_count }} results found</h4>
+      <div class="d-flex flex-wrap pt-5">
+        {% for car in data %}
+        <div class="col-sm-3">
+          <div class="card mx-2">
+            <div class="card-body rounded-3 shadow">
+              {% if car.image %}
+              <div class="p-2" style=""><img class="card-img-top" src="{{ car.image.url }}" alt="Card image cap"></div>
+            {% else %}
+              <img class="card-img-top" src="{% static 'alt_pic.jpeg' %}" alt="Default image">
+            {% endif %}
+                <h5 class="card-title text-decoration-none text-dark">{{car.name}}</a></h5>
+                <p>Price : Tk {{car.price}}</p>
+                <p>Brand : {{car.brand}}</p>
+                <p>
+                  {% for brnd in car.brand.all %}
+                    <button type="button" class="btn btn-warning btn-sm m-2" disabled>{{ brnd.name }}</button>
+                  {% endfor %}
+                </p>
+                <button class="btn btn-danger"><a href="{% url 'details_cars' car.id %}" class="text-decoration-none text-light p-5">View Detalis</a></button>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
